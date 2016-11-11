@@ -487,8 +487,8 @@ var Geosuggest = function (_React$Component) {
           classes = (0, _classnames2.default)('geosuggest', this.props.className, { 'geosuggest--loading': this.state.isLoading }),
           shouldRenderLabel = this.props.label && attributes.id,
           input = _react2.default.createElement(_input2.default, _extends({ className: this.props.inputClassName,
-        ref: function ref(input) {
-          return _this5.input = input;
+        ref: function ref(i) {
+          return _this5.input = i;
         },
         value: this.state.userInput,
         ignoreEnter: !this.state.isSuggestsHidden,
