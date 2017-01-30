@@ -99,6 +99,10 @@ var Geosuggest = function (_React$Component) {
       return _this.activateSuggest('prev');
     };
 
+    _this.onBackspace = function () {
+      return _this.showSuggests();
+    };
+
     _this.onSelect = function () {
       return _this.selectSuggest(_this.state.activeSuggest);
     };
@@ -499,6 +503,7 @@ var Geosuggest = function (_React$Component) {
         onBlur: this.onInputBlur,
         onKeyPress: this.props.onKeyPress,
         onNext: this.onNext,
+        onBackspace: this.onBackspace,
         onPrev: this.onPrev,
         onSelect: this.onSelect,
         onEscape: this.hideSuggests }, attributes)),

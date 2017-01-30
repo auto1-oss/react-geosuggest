@@ -63,6 +63,10 @@ var Input = function (_React$Component) {
     }, _this.onInputKeyDown = function (event) {
       // eslint-disable-line complexity
       switch (event.which) {
+        case 8:
+          // BACKSPACE
+          _this.props.onBackspace();
+          break;
         case 40:
           // DOWN
           event.preventDefault();
