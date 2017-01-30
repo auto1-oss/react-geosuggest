@@ -55,6 +55,9 @@ class Input extends React.Component {
    */
   onInputKeyDown = event => { // eslint-disable-line complexity
     switch (event.which) {
+      case 8: // BACKSPACE
+        this.props.onBackspace();
+        break;
       case 40: // DOWN
         event.preventDefault();
         this.props.onNext();
