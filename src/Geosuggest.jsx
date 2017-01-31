@@ -123,6 +123,15 @@ class Geosuggest extends React.Component {
     }
   }
 
+  /**
+   * Show suggest items after enter pressed
+   */
+  onChangeShowSuggests = () => {
+    if (this.state.isSuggestsHidden) {
+      this.showSuggests();
+    }
+  }
+
   onNext = () => this.activateSuggest('next')
 
   onPrev = () => this.activateSuggest('prev')
@@ -136,6 +145,8 @@ class Geosuggest extends React.Component {
   onSuggestNoResults = () => {
     this.props.onSuggestNoResults(this.state.userInput);
   }
+
+  changeSuggestions = () => this.onChangeShowSuggests()
 
   /**
    * Focus the input
@@ -396,6 +407,7 @@ class Geosuggest extends React.Component {
         onNext={this.onNext}
         onPrev={this.onPrev}
         onSelect={this.onSelect}
+        changeSuggestions={this.changeSuggestions}
         onEscape={this.hideSuggests} {...attributes} />,
       suggestionsList = <SuggestList isHidden={this.state.isSuggestsHidden}
         style={this.props.style.suggests}
