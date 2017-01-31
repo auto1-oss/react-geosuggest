@@ -80,6 +80,7 @@ class Input extends React.Component {
         break;
       /* istanbul ignore next */
       default:
+        this.props.changeSuggestions();
         break;
     }
   }
