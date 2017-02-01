@@ -99,10 +99,6 @@ var Geosuggest = function (_React$Component) {
       return _this.activateSuggest('prev');
     };
 
-    _this.onBackspace = function () {
-      return _this.showSuggests();
-    };
-
     _this.onSelect = function () {
       return _this.selectSuggest(_this.state.activeSuggest);
     };
@@ -121,14 +117,12 @@ var Geosuggest = function (_React$Component) {
 
     _this.hideSuggests = function () {
       _this.props.onBlur(_this.state.userInput);
-      var timer = setTimeout(function () {
+      _this.timer = setTimeout(function () {
         _this.setState({
           isSuggestsHidden: true,
           activeSuggest: null
         });
       }, 100);
-
-      _this.setState({ timer: timer });
     };
 
     _this.selectSuggest = function (suggest) {
@@ -157,8 +151,7 @@ var Geosuggest = function (_React$Component) {
       isLoading: false,
       userInput: props.initialValue,
       activeSuggest: null,
-      suggests: [],
-      timer: null
+      suggests: []
     };
 
     _this.onInputChange = _this.onInputChange.bind(_this);
@@ -219,7 +212,7 @@ var Geosuggest = function (_React$Component) {
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      clearTimeout(this.state.timer);
+      clearTimeout(this.timer);
     }
 
     /**
@@ -251,6 +244,16 @@ var Geosuggest = function (_React$Component) {
      */
     value: function focus() {
       this.input.focus();
+    }
+
+    /**
+     * Blur the input
+     */
+
+  }, {
+    key: 'blur',
+    value: function blur() {
+      this.input.blur();
     }
 
     /**
@@ -503,14 +506,17 @@ var Geosuggest = function (_React$Component) {
         onBlur: this.onInputBlur,
         onKeyPress: this.props.onKeyPress,
         onNext: this.onNext,
-        onBackspace: this.onBackspace,
         onPrev: this.onPrev,
         onSelect: this.onSelect,
         onEscape: this.hideSuggests }, attributes)),
           suggestionsList = _react2.default.createElement(_suggestList2.default, { isHidden: this.state.isSuggestsHidden,
         style: this.props.style.suggests,
         suggestItemStyle: this.props.style.suggestItem,
+        suggestsClassName: this.props.suggestsClassName,
+        suggestItemClassName: this.props.suggestItemClassName,
         suggests: this.state.suggests,
+        hiddenClassName: this.props.suggestsHiddenClassName,
+        suggestItemActiveClassName: this.props.suggestItemActiveClassName,
         activeSuggest: this.state.activeSuggest,
         onSuggestNoResults: this.onSuggestNoResults,
         onSuggestMouseDown: this.onSuggestMouseDown,

@@ -63,10 +63,6 @@ var Input = function (_React$Component) {
     }, _this.onInputKeyDown = function (event) {
       // eslint-disable-line complexity
       switch (event.which) {
-        case 8:
-          // BACKSPACE
-          _this.props.onBackspace();
-          break;
         case 40:
           // DOWN
           event.preventDefault();
@@ -150,6 +146,16 @@ var Input = function (_React$Component) {
      */
     value: function focus() {
       this.input.focus();
+    }
+
+    /**
+     * Blur the input
+     */
+
+  }, {
+    key: 'blur',
+    value: function blur() {
+      this.input.blur();
     }
 
     /**
