@@ -11,6 +11,10 @@ export default {
   disabled: React.PropTypes.bool,
   className: React.PropTypes.string,
   inputClassName: React.PropTypes.string,
+  suggestsClassName: React.PropTypes.string,
+  suggestsHiddenClassName: React.PropTypes.string,
+  suggestItemClassName: React.PropTypes.string,
+  suggestItemActiveClassName: React.PropTypes.string,
   location: React.PropTypes.object,
   radius: React.PropTypes.oneOfType([
     React.PropTypes.string,

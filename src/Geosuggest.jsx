@@ -31,8 +31,7 @@ class Geosuggest extends React.Component {
       isLoading: false,
       userInput: props.initialValue,
       activeSuggest: null,
-      suggests: [],
-      timer: null
+      suggests: []
     };
 
     this.onInputChange = this.onInputChange.bind(this);
@@ -85,7 +84,7 @@ class Geosuggest extends React.Component {
    * When the component will unmount
    */
   componentWillUnmount() {
-    clearTimeout(this.state.timer);
+    clearTimeout(this.timer);
   }
 
   /**
@@ -142,6 +141,13 @@ class Geosuggest extends React.Component {
    */
   focus() {
     this.input.focus();
+  }
+
+  /**
+   * Blur the input
+   */
+  blur() {
+    this.input.blur();
   }
 
   /**
@@ -277,14 +283,12 @@ class Geosuggest extends React.Component {
    */
   hideSuggests = () => {
     this.props.onBlur(this.state.userInput);
-    const timer = setTimeout(() => {
+    this.timer = setTimeout(() => {
       this.setState({
         isSuggestsHidden: true,
         activeSuggest: null
       });
     }, 100);
-
-    this.setState({timer});
   }
 
   /**
@@ -400,7 +404,11 @@ class Geosuggest extends React.Component {
       suggestionsList = <SuggestList isHidden={this.state.isSuggestsHidden}
         style={this.props.style.suggests}
         suggestItemStyle={this.props.style.suggestItem}
+        suggestsClassName={this.props.suggestsClassName}
+        suggestItemClassName={this.props.suggestItemClassName}
         suggests={this.state.suggests}
+        hiddenClassName={this.props.suggestsHiddenClassName}
+        suggestItemActiveClassName={this.props.suggestItemActiveClassName}
         activeSuggest={this.state.activeSuggest}
         onSuggestNoResults={this.onSuggestNoResults}
         onSuggestMouseDown={this.onSuggestMouseDown}
