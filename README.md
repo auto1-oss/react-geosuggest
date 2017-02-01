@@ -25,13 +25,13 @@ As this component uses the Google Maps Places API to get suggests, you must incl
 </html>
 ```
 
-Visit the [Google Developer Console](https://console.developers.google.com) to generate your API key.
+Visit the [Google Developer Console](https://console.developers.google.com) to generate your API key. The API's that you have to enable in your Google API Manager Dashboard are [Google Maps Geocoding API](https://developers.google.com/maps/documentation/geocoding/start), [Google Places API Web Service](https://developers.google.com/places/web-service/) and [Google Maps Javascript API] (https://developers.google.com/maps/documentation/javascript/).
 
 The easiest way to use geosuggest is to install it from NPM and include it in your own React build process (using [Browserify](http://browserify.org), [Webpack](http://webpack.github.io/), etc).
 
 You can also use the standalone build by including `dist/react-geosuggest.js` in your page. If you use this, make sure you have already included React, and it is available as a global variable.
 
-```
+```sh
 npm install react-geosuggest --save
 ```
 
@@ -41,7 +41,7 @@ The Geosuggest works out of the box by just including it. However, you can custo
 
 ### ES6:
 
-```
+```js
 import Geosuggest from 'react-geosuggest';
 
 <Geosuggest />
@@ -49,7 +49,7 @@ import Geosuggest from 'react-geosuggest';
 
 ### ES5:
 
-```
+```js
 var Geosuggest = require('react-geosuggest').default;
 
 <Geosuggest />
@@ -235,6 +235,30 @@ Default: `null`
 
 If the `label` and a `id` prop (see "Others") were supplied, a `<label>` tag with the passed label text will be rendered. The `<label>` element's `for` attribute will correctly point to the `id` of the `<input>` element.
 
+#### suggestsClassName
+Type: `String`
+Default: `''`
+
+Add an additional class to suggest list.
+
+#### suggestsHiddenClassName
+Type: `String`
+Default: `null`
+
+Additional `className` to toggle as the list of suggestions changes visibility.
+
+#### suggestItemClassName
+Type: `String`
+Default: `''`
+
+Add an additional class to suggest item.
+
+#### suggestItemActiveClassName
+Type: `String`,
+Default: `null`
+
+Additional `className` to add when a suggestion item is active.
+
 #### Others
 
 All [allowed attributes for `input[type="text"]`](https://github.com/ubilabs/react-geosuggest/blob/master/src/filter-input-attributes.js#L4)
@@ -243,9 +267,13 @@ All [DOM mouse events](https://facebook.github.io/react/docs/events.html#mouse-e
 
 
 ### Exposed component functions
+These functions are accessible by setting "ref" on the component (see example below)
 
 #### focus()
 Call `focus` to focus on the element. The suggest list will be expanded with the current suggestions.
+
+#### blur()
+Call `blur` to blur (unfocus) the element. The suggest list will be closed.
 
 #### update(value)
 It is possible to update the value of the input contained within the GeoSuggest component by calling the `update` function with a new desired `value` of the type String.
@@ -255,7 +283,7 @@ It is also possible to clear the value of the input contained within the GeoSugg
 
 ### Example
 
-```
+```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Geosuggest from 'react-geosuggest';
@@ -274,12 +302,18 @@ var App = React.createClass({
     return (
       <div>
         <Geosuggest
+          ref={el=>this._geoSuggest=el}
           placeholder="Start typing!"
           initialValue="Hamburg"
           fixtures={fixtures}
           onSuggestSelect={this.onSuggestSelect}
           location={new google.maps.LatLng(53.558572, 9.9278215)}
           radius="20" />
+
+        {* Buttons to trigger exposed component functions *}
+        <button onClick={()=>this._geoSuggest.focus()}>Focus</button>
+        <button onClick={()=>this._geoSuggest.update('New Zeland')}>Update</button>
+        <button onClick={()=>this._geoSuggest.clear()}>Clear</button>
       </div>
     )
   },
@@ -303,7 +337,7 @@ This component uses [BEM](http://csswizardry.com/2013/01/mindbemding-getting-you
 ### Note:
 
 The `geosuggest__suggests--hidden` class is added to hide the suggestion list. You should copy the style below into your CSS file.
-```
+```css
 .geosuggest__suggests--hidden {
   max-height: 0;
   overflow: hidden;
@@ -313,7 +347,7 @@ The `geosuggest__suggests--hidden` class is added to hide the suggestion list. Y
 The above class is added whenever the suggestion list needs to be hidden. This occurs when the user selects an item from the list or when the user triggers the `blur` event on the input.
 
 Similarly, you need to have the class `geosuggest__item--active` similar to this:
-```
+```css
 .geosuggest__item--active {
   background: #267dc0;
   color: #fff;

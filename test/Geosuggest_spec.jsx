@@ -244,6 +244,13 @@ describe('Component: Geosuggest', () => {
       expect(document.activeElement.classList.contains('geosuggest__input')).to.be.true; // eslint-disable-line no-unused-expressions, max-len
     });
 
+    it('should not have the focus after calling `blur`', () => {
+      component.focus();
+      expect(document.activeElement.classList.contains('geosuggest__input')).to.be.true; // eslint-disable-line no-unused-expressions, max-len
+      component.blur();
+      expect(document.activeElement.classList.contains('geosuggest__input')).to.be.false; // eslint-disable-line no-unused-expressions, max-len
+    });
+
     it('should add external inline `style` to input component', () => { // eslint-disable-line max-len
       const geoSuggestInput = TestUtils.findRenderedDOMComponentWithClass(component, 'geosuggest__input'); // eslint-disable-line max-len
       expect(geoSuggestInput.style['border-color']).to.be.equal('#000');
@@ -456,6 +463,71 @@ describe('Component: Geosuggest', () => {
       expect(() =>
         TestUtils.findRenderedDOMComponentWithTag(component, 'label')
       ).to.throw(Error);
+    });
+  });
+
+  describe('with suggestsHiddenClassName and suggestItemActiveClassName', () => { // eslint-disable-line max-len
+    const props = {
+      suggestsHiddenClassName: 'suggests-hidden-class',
+      suggestItemActiveClassName: 'suggest-item-active',
+      autoActivateFirstSuggest: true
+    };
+
+    beforeEach(() => render(props));
+
+    it('should apply suggestsHiddenClassName when the list is hidden', () => {
+      const geoSuggestInput = TestUtils.findRenderedDOMComponentWithClass(component, 'geosuggest__input'); // eslint-disable-line max-len
+      TestUtils.Simulate.focus(geoSuggestInput);
+
+      const suggests = TestUtils.scryRenderedDOMComponentsWithClass(component, 'geosuggest__suggests'); // eslint-disable-line max-len, one-var
+      expect(suggests[0].classList.contains('suggests-hidden-class')).to.be.true; // eslint-disable-line no-unused-expressions, max-len
+      expect(suggests[0].classList.contains('geosuggest__suggests--hidden')).to.be.true; // eslint-disable-line no-unused-expressions, max-len
+    });
+
+    it('should apply suggestItemActiveClassName when a list item is active', done => { // eslint-disable-line max-len
+      const geoSuggestInput = TestUtils.findRenderedDOMComponentWithClass(component, 'geosuggest__input'); // eslint-disable-line max-len
+      geoSuggestInput.value = 'New';
+      TestUtils.Simulate.change(geoSuggestInput);
+      TestUtils.Simulate.focus(geoSuggestInput);
+
+      setImmediate(() => {
+        const activeItems = TestUtils.scryRenderedDOMComponentsWithClass(component, 'suggest-item-active'); // eslint-disable-line max-len
+        expect(activeItems.length).to.be.equal(1);
+        expect(activeItems[0].classList.contains('geosuggest__item--active')).to.be.true; // eslint-disable-line no-unused-expressions, max-len
+        done();
+      });
+    });
+  });
+
+  describe('with suggestsClassName and suggestItemClassName', () => { // eslint-disable-line max-len
+    const props = {
+      suggestsClassName: 'suggests-class',
+      suggestItemClassName: 'suggest-item'
+    };
+
+    beforeEach(() => render(props));
+
+    it('should apply suggestsClassName to the list', () => {
+      const geoSuggestInput = TestUtils.findRenderedDOMComponentWithClass(component, 'geosuggest__input'); // eslint-disable-line max-len
+      TestUtils.Simulate.focus(geoSuggestInput);
+
+      const suggests = TestUtils.scryRenderedDOMComponentsWithClass(component, 'geosuggest__suggests'); // eslint-disable-line max-len, one-var
+      expect(suggests[0].classList.contains('suggests-class')).to.be.true; // eslint-disable-line no-unused-expressions, max-len
+    });
+
+    it('should apply suggestItemClassName to each list item', done => { // eslint-disable-line max-len
+      const geoSuggestInput = TestUtils.findRenderedDOMComponentWithClass(component, 'geosuggest__input'); // eslint-disable-line max-len
+      geoSuggestInput.value = 'New';
+      TestUtils.Simulate.change(geoSuggestInput);
+      TestUtils.Simulate.focus(geoSuggestInput);
+
+      setImmediate(() => {
+        const totalItems = TestUtils.scryRenderedDOMComponentsWithClass(component, 'suggest-item'), // eslint-disable-line max-len
+          itemsWithItemClass = TestUtils.scryRenderedDOMComponentsWithClass(component, 'geosuggest__item'); // eslint-disable-line max-len
+
+        expect(totalItems.length).to.be.equal(itemsWithItemClass.length);
+        done();
+      });
     });
   });
 });
